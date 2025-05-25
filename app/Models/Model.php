@@ -71,6 +71,17 @@ abstract class Model implements ModelInterface
         return $this->mapToModel($qryResult[0]);
     }
 
+    function findElementsIDByProperty(string $property, string $value){
+        $sql = "SELECT id FROM `" . static::$table . "` WHERE $property = :value";
+
+        $qryResult = $this->db->execSql($sql, ['value' => $value]);
+        if (empty($qryResult)) {
+            return null;
+        }
+
+        return $qryResult[0];
+    }
+
     function all($orderBy = []): array
     {
         $sql = self::select();

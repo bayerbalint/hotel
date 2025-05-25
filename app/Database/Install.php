@@ -2,6 +2,8 @@
 
 namespace App\Database;
 
+use App\Models\RoomModel;
+use App\Models\GuestModel;
 use App\Views\Display;
 use App\Database\Database;
 use Exception;
@@ -10,11 +12,12 @@ class Install extends Database
 {
 
     protected CONST SETUP = [
-        'numberOfRecords' => 50,
+        'numberOfRecords' => 20,
         'floorCount' => 5,
         'roomCount' => 10,
-        'accommodation' => [2,4,6,8],
-        'priceRange' => [10000,100000],
+        'days' => 5,
+        'accommodation' => [2,4,6],
+        'priceRange' => [10000,40000],
         'lastNames' => [ 'Major','Riz','Kard','Pum','Víz','Kandisz','Patta','Para','Pop','Remek','Ének','Szalmon','Ultra','Dil','Git','Har','Külö','Harm',
                          'Zsíros B.','Virra','Kasza','Budipa','Bekre','Fejet','Minden','Bármi','Lapos','Bor','Mikorka','Szikla','Fekete','Rabsz','Kalim',
                          'Békés','Szenyo'],
@@ -134,19 +137,25 @@ class Install extends Database
     }
 
     function fillTables($dbName = self::DEFAULT_CONFIG['database']){
-        $this->fillTableGuests($dbName);
-        $this->fillTableRooms($dbName);
+        if ($this::SETUP['floorCount'] * $this::SETUP['roomCount'] < $this::SETUP['numberOfRecords']) {
+            $length = $this::SETUP['floorCount'] * $this::SETUP['roomCount'];
+        } else {
+            $length = $this::SETUP['numberOfRecords'];
+        }
+        $this->fillTableGuests($dbName, $length);
+        $this->fillTableRooms($dbName, $length);
+        $this->fillTableReservations($dbName, $length);
     }
 
-    function fillTableGuests($dbName): bool{
+    function fillTableGuests($dbName, $length): bool{
         try {
             $sql = "INSERT INTO `$dbName`.guests(name, age) VALUES";
 
-            for ($i = 0; $i < $this::SETUP['numberOfRecords']; $i++){
-                $name = $this::SETUP['firstNames'][rand(0,count($this::SETUP['firstNames'])-1)] . " " . $this::SETUP['lastNames'][rand(0,count($this::SETUP['lastNames'])-1)];
+            for ($i = 0; $i < $length; $i++){
+                $name = $this::SETUP['lastNames'][rand(0,count($this::SETUP['lastNames'])-1)] . " " . $this::SETUP['firstNames'][rand(0,count($this::SETUP['firstNames'])-1)];
                 $age = rand(18, 100);
                 $sql .= "('$name',$age)";
-                if ($i != $this::SETUP['numberOfRecords']-1){
+                if ($i != $length-1){
                     $sql .= ",";
                 }
             }
@@ -159,45 +168,72 @@ class Install extends Database
         }
     }
 
-    function fillTableRooms($dbName): bool
+    function fillTableRooms($dbName, $length): bool
     {
-        // try {
-        //     $sql = "INSERT INTO `$dbName`.rooms(floor, room_number, accommodation, price, comment) VALUES";
+        try {
+            $sql = "INSERT INTO `$dbName`.rooms(floor, room_number, accommodation, price, comment) VALUES";
+            $rooms = array_map(fn($j) => [$j => array_map(fn($i) => (string) $i, range(1, $this::SETUP['roomCount']))], range(0, $this::SETUP['floorCount']-1));
 
-        //     $rooms = array_map(fn($j) => $j, array_map(fn($i) => (string) $i, range(1, $this::SETUP['roomCount'])), range(0, $this::SETUP['floorCount']-1));
-        //     $floors = array_map(fn($i) => $i, range(0, $this::SETUP['floorCount']-1));
-        //     var_dump($rooms);
+            for ($k = 0; $k < $length; $k++){
+                if (count($rooms) > 0){
+                    $floorIndex = rand(0, count($rooms)-1);
+                    $floor = array_keys($rooms[$floorIndex])[0];
+                    if (count($rooms[$floorIndex][$floor]) > 0){
+                        $roomIndex = rand(0, count($rooms[$floorIndex][$floor])-1);
+                        $room = $rooms[$floorIndex][$floor][$roomIndex];
+                        array_splice($rooms[$floorIndex][$floor], $roomIndex, 1);
+                    }
+                    if (count($rooms[$floorIndex][$floor]) == 0){
+                        array_splice($rooms, $floorIndex, 1);
+                    }
+    
+                    $accommodation = $this::SETUP['accommodation'][rand(0, count($this::SETUP['accommodation'])-1)];
+                    $price = round(rand($this::SETUP['priceRange'][0], $this::SETUP['priceRange'][1]),-2);
+                    $comment = 'Megjegyzés ' . $k;
+                    $sql .= "(" . $floor . "," . $room+$floor*$this::SETUP['roomCount'] . "," . $accommodation . "," . $price . ",'" . $comment . "')";
+                    if ($k != $length-1){
+                        $sql .= ',';
+                    }
+                }
+            }
+            $sql .= ';';
+            return (bool) $this->execSql($sql);
 
-        //     for ($i = 0; $i < $this::SETUP['numberOfRecords']; $i++) {
-        //         $floorIndex = rand(0, count($floors)-1);
-        //         $floor = $floors[$floorIndex];
-        //         $roomNumberIndex = rand(0, count($rooms[$floorIndex])-1);
-        //         $roomNumber = $rooms[$floorIndex][$roomNumberIndex];
-        //         $accommodation = $this::SETUP['accommodation'][rand(0, count($this::SETUP['accommodation'])-1)];
-        //         $price = round(rand($this::SETUP['priceRange'][0],$this::SETUP['priceRange'][0]), -1);
-        //         $comment = "Megjegyzés " . $i++;
+        } catch (Exception $e) {
+            Display::message($e->getMessage(), 'error');
+            error_log($e->getMessage());
+            return false;
+        }
+    }
 
-        //         $sql .= "($floor,$roomNumber,$accommodation,$price,'$comment')";
+    function fillTableReservations($dbName, $length){
+        try{
+            $sql = "INSERT INTO `$dbName`.reservations(room_id, guest_id, days, date) VALUES";
 
-        //         array_splice($rooms[$floorIndex], $roomNumberIndex);
-        //         if (count($rooms[$floorIndex]) == 0){
-        //             echo 'okés he <br>';
-        //             array_splice($floors, $floorIndex, 1);
-        //             var_dump($rooms[$floorIndex]);
-        //             array_splice($rooms, $floorIndex, 1);
-        //         }
-                
-        //         if ($i != $this::SETUP['numberOfRecords'] - 1) {
-        //             $sql .= ",";
-        //         }
-        //     }
+            $room = new RoomModel();
+            $rooms = $room->all(['order_by' => ['RAND()'], 'direction' => ['ASC']]);
+            $guest = new GuestModel();
+            $guests = $guest->all(['order_by' => ['RAND()'], 'direction' => ['ASC']]);
 
-        //     return (bool) $this->execSql($sql);
-        // } catch (Exception $e) {
-        //     Display::message($e->getMessage(), 'error');
-        //     error_log($e->getMessage());
-        //     return false;
-        // }
-        return true;
+            for ($i = 0; $i < count($rooms); $i++){
+                $roomID = $rooms[$i]->id;
+                $guestID = $guests[$i]->id;
+                $days = rand(1, $this::SETUP['days']);
+                $date = date("Y-m-d", rand(strtotime("Jan 01 2015"), strtotime("Nov 01 2016")));
+                echo $date . '<br>';
+                $sql .= "($roomID,'$guestID',$days,'$date')";
+                if ($i != count($rooms)-1){
+                    $sql .= ',';
+                }
+            }
+            $sql .= ';';
+
+            return (bool) $this->execSql($sql);
+        }
+        catch (Exception $e){
+            Display::message($e->getMessage(), 'error');
+            error_log($e->getMessage());
+            return false;
+        }
     }
 }

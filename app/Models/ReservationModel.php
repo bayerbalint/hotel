@@ -41,4 +41,33 @@ class ReservationModel extends Model
         $room = new RoomModel();
         return $room->find($this->room_id);
     }
+
+    public function getRooms($id = ""){
+        $room = new RoomModel();
+        $rooms = $room->all();
+        $options = "";
+        for ($i = 0; $i < count($rooms); $i++){
+            $currRoom = $room->findElementsIDByProperty("room_number", $rooms[$i]->room_number);
+            $options .= '<option value="' . $currRoom['id'] . '"';
+            if ($rooms[$i]->id == $id){
+                $options .= ' selected';
+            }
+            $options .= '>' . $rooms[$i]->room_number . '</option>';
+        }
+        return $options;
+    }
+
+    public function getGuests($id = ""){
+        $guest = new GuestModel();
+        $guests = $guest->all();
+        $options = "";
+        for ($i = 0; $i < count($guests); $i++) {
+            $options .= '<option value="' . $guest->findElementsIDByProperty("name", $guests[$i]->name)['id'] . '"';
+            if ($guests[$i]->id == $id) {
+                $options .= ' selected';
+            }
+            $options .= '>' . $guests[$i]->name . '</option>';
+        }
+        return $options;
+    }
 }

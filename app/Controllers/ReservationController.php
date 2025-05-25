@@ -1,6 +1,9 @@
 <?php
 namespace App\Controllers;
+use App\Models\GuestModel;
+use App\Models\Model;
 use App\Models\ReservationModel;
+use App\Models\RoomModel;
 use App\Views\Display;
 
 class ReservationController extends Controller
@@ -43,8 +46,8 @@ class ReservationController extends Controller
         //     $this->redirect('/reservations/create'); // Redirect if input is invalid
         // }
         // Use the existing model instance
-        $this->model->room_id = $data['room_id'];
-        $this->model->guest_id = $data['guest_id'];
+        $this->model->room_id = $_POST['room_id'];
+        $this->model->guest_id = $_POST['guest_id'];
         $this->model->days = $data['days'];
         $this->model->date = $data['date'];
         $this->model->create();
@@ -58,8 +61,8 @@ class ReservationController extends Controller
         //     // Handle invalid ID or data
         //     $this->redirect('/reservations');
         // }
-        $reservation->room_id = $data['room_id'];
-        $reservation->guest_id = $data['guest_id'];
+        $reservation->room_id = $_POST['room_id'];
+        $reservation->guest_id = $_POST['guest_id'];
         $reservation->days = $data['days'];
         $reservation->date = $data['date'];
         $reservation->update();
