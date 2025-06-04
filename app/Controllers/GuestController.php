@@ -35,15 +35,22 @@ class GuestController extends Controller {
 
     public function save(array $data): void
     {
-        if (empty($data['name'])) {
-            $_SESSION['warning_message'] = "A vendég neve kötelező mező.";
-            $this->redirect('/guests/create'); // Redirect if input is invalid
+        if (empty($data['name']) || empty($data['age'])) {
+            // Handle invalid ID or data
+            $_SESSION['warning_message'] = "Hiányos adatok!";
+            $this->redirect('/guests');
         }
-        if (empty($data['age'])){
-            $_SESSION['warning_message'] = "A vendég életkora kötelező mező.";
-            $this->redirect('/guests/create');
+        if (is_numeric($data['name']) || !is_numeric($data['age'])){
+            $_SESSION['warning_message'] = "A megadott értékek típusa nem megfelelő!";
+            $this->redirect('/guests');
         }
-        // Use the existing model instance
+        $guests = $this->model->all();
+        foreach ($guests as $currGuest) {
+            if ($currGuest->name == $data['name'] && $currGuest->age == $data['age']) {
+                $_SESSION['warning_message'] = "Ugyanolyan nevű és életkorú vendég nem létezhet!";
+                $this->redirect('/guests');
+            }
+        }
         $this->model->name = $data['name'];
         $this->model->age = $data['age'];
         $this->model->create();
@@ -55,7 +62,19 @@ class GuestController extends Controller {
         $guest = $this->model->find($id);
         if (!$guest || empty($data['name']) || empty($data['age'])) {
             // Handle invalid ID or data
+            $_SESSION['warning_message'] = "Hiányos adatok!";
             $this->redirect('/guests');
+        }
+        if (is_numeric($data['name']) || !is_numeric($data['age'])) {
+            $_SESSION['warning_message'] = "A megadott értékek típusa nem megfelelő!";
+            $this->redirect('/guests');
+        }
+        $guests = $this->model->all();
+        foreach ($guests as $currGuest) {
+            if ($currGuest->id != $id && $currGuest->name == $data['name'] && $currGuest->age == $data['age']) {
+                $_SESSION['warning_message'] = "Ugyanolyan nevű és életkorú vendég nem létezhet!";
+                $this->redirect('/guests');
+            }
         }
         $guest->name = $data['name'];
         $guest->age = $data['age'];

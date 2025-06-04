@@ -13,7 +13,7 @@ $html = <<<HTML
                 {$reservation->getGuests($reservation->guest_id)}
             </select><br>
             <label for="reservations">Napok</label>
-            <input type="text" name="days" id="days" value="{$reservation->days}"><br>
+            <input type="number" name="days" id="days" value="{$reservation->days}"><br>
             <label for="reservations">Dátum</label>
             <input type="date" name="date" id="date" value="{$reservation->date}"><br>
             <hr>

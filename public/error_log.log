@@ -2721,3 +2721,83 @@ Stack trace:
 #8 {main}
   thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php on line 36
 [25-May-2025 17:21:31 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "," in I:\sulis\webp\2025.05.14 (szallasos)\app\Database\Install.php on line 218
+[25-May-2025 17:30:33 Europe/Berlin] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'room_number' in 'order clause'
+[30-May-2025 20:54:33 Europe/Berlin] PHP Warning:  Array to string conversion in I:\sulis\webp\2025.05.14 (szallasos)\app\views\Display.php on line 43
+[31-May-2025 20:34:45 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: date(): Argument #1 ($format) must be of type string, DateTime given in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:54
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php(54): date(Object(DateTime), Object(DateInterval))
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#4 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#5 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 54
+[31-May-2025 20:35:22 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: date(): Argument #1 ($format) must be of type string, DateTime given in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:54
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php(54): date(Object(DateTime), Object(DateInterval))
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#4 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#5 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 54
+[31-May-2025 20:35:28 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: date(): Argument #1 ($format) must be of type string, DateTime given in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:54
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php(54): date(Object(DateTime), Object(DateInterval))
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#4 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#5 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 54
+[31-May-2025 20:37:38 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: date(): Argument #2 ($timestamp) must be of type ?int, DateTime given in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:56
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php(56): date('Y-m-d', Object(DateTime))
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#4 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#5 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 56
+[31-May-2025 20:40:38 Europe/Berlin] PHP Fatal error:  Uncaught Error: Object of class DateTime could not be converted to string in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:56
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#4 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 56
+[31-May-2025 20:40:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Object of class DateTime could not be converted to string in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:56
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#4 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 56
+[31-May-2025 20:40:56 Europe/Berlin] PHP Fatal error:  Uncaught Error: Object of class DateTime could not be converted to string in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php:56
+Stack trace:
+#0 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(79): App\Controllers\ReservationController->save(Array)
+#1 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(33): App\Routing\Router->handlePostRequests('/reservations')
+#2 I:\sulis\webp\2025.05.14 (szallasos)\app\Routing\Router.php(23): App\Routing\Router->dispatch('POST', '/reservations')
+#3 I:\sulis\webp\2025.05.14 (szallasos)\public\index.php(11): App\Routing\Router->handle()
+#4 {main}
+  thrown in I:\sulis\webp\2025.05.14 (szallasos)\app\Controllers\ReservationController.php on line 56
+[04-Jun-2025 08:25:19 Europe/Berlin] SQLSTATE[HY000] [2002] Nem hozható létre kapcsolat, mert a célszámítógép már visszautasította a kapcsolatot
+[04-Jun-2025 08:25:19 Europe/Berlin] PHP Fatal error:  Uncaught RuntimeException: Database connection error. in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php:36
+Stack trace:
+#0 E:\sulis\webp\2025.05.14 (szallasos)\public\index.php(13): App\Database\Database->__construct(Array)
+#1 {main}
+  thrown in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php on line 36
+[04-Jun-2025 08:26:24 Europe/Berlin] SQLSTATE[HY000] [2002] Nem hozható létre kapcsolat, mert a célszámítógép már visszautasította a kapcsolatot
+[04-Jun-2025 08:26:24 Europe/Berlin] PHP Fatal error:  Uncaught RuntimeException: Database connection error. in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php:36
+Stack trace:
+#0 E:\sulis\webp\2025.05.14 (szallasos)\public\index.php(13): App\Database\Database->__construct(Array)
+#1 {main}
+  thrown in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php on line 36
+[04-Jun-2025 08:26:28 Europe/Berlin] SQLSTATE[HY000] [2002] Nem hozható létre kapcsolat, mert a célszámítógép már visszautasította a kapcsolatot
+[04-Jun-2025 08:26:28 Europe/Berlin] PHP Fatal error:  Uncaught RuntimeException: Database connection error. in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php:36
+Stack trace:
+#0 E:\sulis\webp\2025.05.14 (szallasos)\public\index.php(13): App\Database\Database->__construct(Array)
+#1 {main}
+  thrown in E:\sulis\webp\2025.05.14 (szallasos)\app\Database\Database.php on line 36

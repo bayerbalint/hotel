@@ -44,11 +44,10 @@ class ReservationModel extends Model
 
     public function getRooms($id = ""){
         $room = new RoomModel();
-        $rooms = $room->all();
+        $rooms = $room->all(['order_by' => ['room_number']]);
         $options = "";
         for ($i = 0; $i < count($rooms); $i++){
-            $currRoom = $room->findElementsIDByProperty("room_number", $rooms[$i]->room_number);
-            $options .= '<option value="' . $currRoom['id'] . '"';
+            $options .= '<option value="' . $rooms[$i]->id . '"';
             if ($rooms[$i]->id == $id){
                 $options .= ' selected';
             }
@@ -59,10 +58,10 @@ class ReservationModel extends Model
 
     public function getGuests($id = ""){
         $guest = new GuestModel();
-        $guests = $guest->all();
+        $guests = $guest->all(['order_by' => ['name']]);
         $options = "";
         for ($i = 0; $i < count($guests); $i++) {
-            $options .= '<option value="' . $guest->findElementsIDByProperty("name", $guests[$i]->name)['id'] . '"';
+            $options .= '<option value="' . $guests[$i]->id . '"';
             if ($guests[$i]->id == $id) {
                 $options .= ' selected';
             }

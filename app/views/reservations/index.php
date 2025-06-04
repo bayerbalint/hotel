@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\GuestModel;
-
 $tableBody = "";
 foreach ($reservations as $reservation) {
     $tableBody .= <<<HTML

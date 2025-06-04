@@ -36,15 +36,25 @@ class RoomController extends Controller {
 
     public function save(array $data): void
     {
-        // if (empty($data['name'])) {
-        //     $_SESSION['warning_message'] = "A szoba neve kötelező mező.";
-        //     $this->redirect('/rooms/create'); // Redirect if input is invalid
-        // }
-        // if (empty($data['year'])){
-        //     $_SESSION['warning_message'] = "A szoba éve kötelező mező.";
-        //     $this->redirect('/rooms/create');
-        // }
-        // Use the existing model instance
+        if (empty($data['comment'])){
+            $data['comment'] = "-";
+        }
+        if ((empty($data['floor']) && $data['floor'] != 0) || empty($data['room_number']) || empty($data['accommodation']) || empty($data['price'])) {
+            // Handle invalid ID or data
+            $_SESSION['warning_message'] = "Hiányos adatok!";
+            $this->redirect('/rooms');
+        }
+        if (!is_numeric($data['floor']) || !is_numeric($data['room_number']) || !is_numeric($data['accommodation']) || !is_numeric($data['price'])) {
+            $_SESSION['warning_message'] = "A megadott értékek típusa nem megfelelő!";
+            $this->redirect('/rooms');
+        }
+        $rooms = $this->model->all();
+        foreach ($rooms as $currRoom) {
+            if ($currRoom->floor == $data['floor'] && $currRoom->room_number == $data['room_number']) {
+                $_SESSION['warning_message'] = "Nem létezhet ugyanazon az emeleten ugyanaz a szobaszám!";
+                $this->redirect('/rooms');
+            }
+        }
         $this->model->floor = $data['floor'];
         $this->model->room_number = $data['room_number'];
         $this->model->accommodation = $data['accommodation'];
@@ -57,9 +67,24 @@ class RoomController extends Controller {
     public function update(int $id, array $data): void
     {
         $room = $this->model->find($id);
-        if (!$room) { // || empty($data['floor']) || empty($data['year'])
+        if (empty($data['comment'])) {
+            $data['comment'] = "-";
+        }
+        if (!$room || (empty($data['floor']) && $data['floor'] != 0) || empty($data['room_number']) || empty($data['accommodation']) || empty($data['price'])){
             // Handle invalid ID or data
+            $_SESSION['warning_message'] = "Hiányos adatok!";
             $this->redirect('/rooms');
+        }
+        if (!is_numeric($data['floor']) || !is_numeric($data['room_number']) || !is_numeric($data['accommodation']) || !is_numeric($data['price'])) {
+            $_SESSION['warning_message'] = "A megadott értékek típusa nem megfelelő!";
+            $this->redirect('/rooms');
+        }
+        $rooms = $this->model->all();
+        foreach ($rooms as $currRoom) {
+            if ($currRoom->id != $id && $currRoom->floor == $data['floor'] && $currRoom->room_number == $data['room_number']) {
+                $_SESSION['warning_message'] = "Nem létezhet ugyanazon az emeleten ugyanaz a szobaszám!";
+                $this->redirect('/rooms');
+            }
         }
         $room->floor = $data['floor'];
         $room->room_number = $data['room_number'];

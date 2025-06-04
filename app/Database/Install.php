@@ -12,12 +12,13 @@ class Install extends Database
 {
 
     protected CONST SETUP = [
-        'numberOfRecords' => 20,
-        'floorCount' => 5,
+        'numberOfRecords' => 80,
+        'floorCount' => 10,
         'roomCount' => 10,
-        'days' => 5,
-        'accommodation' => [2,4,6],
+        'days' => 10,
+        'accommodation' => [1,2,3,4,5,6],
         'priceRange' => [10000,40000],
+        'dateRange' => ["Jan 01 2024", "Jun 01 2025"],
         'lastNames' => [ 'Major','Riz','Kard','Pum','Víz','Kandisz','Patta','Para','Pop','Remek','Ének','Szalmon','Ultra','Dil','Git','Har','Külö','Harm',
                          'Zsíros B.','Virra','Kasza','Budipa','Bekre','Fejet','Minden','Bármi','Lapos','Bor','Mikorka','Szikla','Fekete','Rabsz','Kalim',
                          'Békés','Szenyo'],
@@ -117,8 +118,8 @@ class Install extends Database
             `guest_id` int(10) DEFAULT NULL,
             `days` int(10) DEFAULT NULL,
             `date` date DEFAULT NULL,
-            FOREIGN KEY (`room_id`) REFERENCES rooms(`id`),
-            FOREIGN KEY (`guest_id`) REFERENCES guests(`id`)";
+            FOREIGN KEY (`room_id`) REFERENCES rooms(`id`) ON DELETE CASCADE,
+            FOREIGN KEY (`guest_id`) REFERENCES guests(`id`) ON DELETE CASCADE";
             
         return $this->createTable("reservations", $tableBody, $dbName);
     }
@@ -159,7 +160,7 @@ class Install extends Database
                     $sql .= ",";
                 }
             }
-
+            $sql .= ';';
             return (bool) $this->execSql($sql);
         } catch (Exception $e) {
             Display::message($e->getMessage(), 'error');
@@ -219,8 +220,7 @@ class Install extends Database
                 $roomID = $rooms[$i]->id;
                 $guestID = $guests[$i]->id;
                 $days = rand(1, $this::SETUP['days']);
-                $date = date("Y-m-d", rand(strtotime("Jan 01 2015"), strtotime("Nov 01 2016")));
-                echo $date . '<br>';
+                $date = date("Y-m-d", rand(strtotime($this::SETUP['dateRange'][0]), strtotime($this::SETUP['dateRange'][1])));
                 $sql .= "($roomID,'$guestID',$days,'$date')";
                 if ($i != count($rooms)-1){
                     $sql .= ',';
